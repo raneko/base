@@ -1,0 +1,17 @@
+{
+    "name": "raneko/base",
+    "description": "Base library for application",
+    "autoload": {
+        "psr-4": {
+            "Raneko\\": "src"
+        }
+    },
+    "require": {
+        "aws/aws-sdk-php": "*",
+        "monolog/monolog": "*",
+        "phpunit/phpunit": "4.*",
+        "zendframework/zendframework1": "*",
+        "solarium/solarium": "3.2.0",
+        "illuminate/database": "*"
+    }
+}
