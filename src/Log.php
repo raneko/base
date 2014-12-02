@@ -17,12 +17,6 @@ class Log
     private static $instance;
 
     /**
-     * Template list.
-     * @var array
-     */
-    private static $logTemplateList;
-
-    /**
      * List of message.
      * @var Raneko\Common\Message
      */
@@ -37,38 +31,8 @@ class Log
 
     private function __construct()
     {
-        $this->loadLogTemplate();
         self::$messageList = array();
-        self::$posterList = array();
-    }
-
-    private function loadLogTemplate()
-    {
-        self::$logTemplateList = array();
-
-        $template = new \Raneko\Log\Template();
-        $template->setsystemMessageTemplate("{sys_message}");
-        $template->setuserMessageTemplate("{usr_message}");
-        $template->setuserInstructionTemplate("{usr_instruction}");
-        self::$logTemplateList[self::DEFAULT_CODE] = $template;
-    }
-
-    /**
-     * Get log template.
-     * @param string $code
-     * @return \Raneko\Log\Template
-     */
-    private function getLogTemplate($code)
-    {
-        $_code = trim(strtolower($code));
-        if (isset(self::$logTemplateList[$_code]))
-        {
-            return self::$logTemplateList[$_code];
-        }
-        else
-        {
-            return NULL;
-        }
+        self::$posterList = array();        
     }
 
     /**
@@ -151,28 +115,9 @@ class Log
     {
         self::$messageList[] = $message;
     }
-
-    public function baseLog($method, $code, $type, $data = array())
+    
+    public function _baseLogMessage(\Raneko\Common\Message $message)
     {
-        $message = new \Raneko\Common\Message();
-        $message->Code($code);
-        $message->Method($method);
-        $message->Type($type);
-        $message->AudienceApp();
-
-        $template = $this->getLogTemplate($code);
-        if ($template !== NULL)
-        {
-            /* Use the template to form log message */
-            $template->setData($data);
-            $message->Text($template->getSystemMessage());
-        }
-        else
-        {
-            $data["code_error"] = "Code not found";
-            $message->Text(json_encode($data));
-        }
-
         $this->_addMessage($message);
 
         foreach (self::$posterList as $_poster)
@@ -185,81 +130,73 @@ class Log
     }
 
     /**
-     * Info message based on code.
+     * 
      * @param string $method
      * @param string $code
-     * @param array $data
+     * @param type $type Log type from \Monolog\Logger
+     * @param \Raneko\Common\Message $message
+     * @param type $userMessage
      */
-    public static function infoCode($method, $code, $data = array())
+    protected function _baseLog($method, $code, $type, $message, $userMessage = null)
     {
-        self::getInstance()->baseLog($method, $code, \Raneko\Common\Message::TYPE_INFO, $data);
+        $message = new \Raneko\Common\Message();
+        $message->Code($code);
+        $message->Method($method);
+        $message->Type($type);
+        $message->AudienceApp();
+        $message->Text($message);
+
+        $this->_baseLogMessage($message);
     }
 
-    /**
-     * Error message based on code.
-     * @param string $method
-     * @param string $code
-     * @param array $data
-     */
-    public static function errorCode($method, $code, $data = array())
+    public static function info($method, $message, $userMessage = NULL)
     {
-        self::getInstance()->baseLog($method, $code, \Raneko\Common\Message::TYPE_ERROR, $data);
+        return self::codeInfo(self::DEFAULT_CODE, $method, $message, $userMessage);
+    }
+
+    public static function error($method, $message, $userMessage = NULL)
+    {
+        return self::codeError(self::DEFAULT_CODE, $method, $message, $userMessage);
+    }
+
+    public static function warn($method, $message, $userMessage = NULL)
+    {
+        return self::codeWarn(self::DEFAULT_CODE, $method, $message, $userMessage);
     }
     
-    /**
-     * Warning message based on code.
-     * @param string $method
-     * @param string $code
-     * @param array $data
-     */
-    public static function warnCode($method, $code, $data = array())
+    public static function debug($method, $message, $userMessage = NULL)
     {
-        self::getInstance()->baseLog($method, $code, \Raneko\Common\Message::TYPE_WARNING, $data);
-    }
-
-    public static function info($method, $systemMessage, $userMessage = NULL, $userInstruction = NULL)
-    {
-        return self::infoCode($method, self::DEFAULT_CODE, self::getDefaultData($systemMessage, $userMessage, $userInstruction));
-    }
-
-    public static function error($method, $systemMessage, $userMessage = NULL, $userInstruction = NULL)
-    {
-        return self::errorCode($method, self::DEFAULT_CODE, self::getDefaultData($systemMessage, $userMessage, $userInstruction));
-    }
-
-    public static function warn($method, $systemMessage, $userMessage = NULL, $userInstruction = NULL)
-    {
-        return self::warnCode($method, self::DEFAULT_CODE, self::getDefaultData($systemMessage, $userMessage, $userInstruction));
-    }
-    
-    public static function debug($method, $systemMessage, $userMessage = NULL, $userInstruction = NULL)
-    {
-        return self::errorCode($method, self::DEFAULT_CODE, self::getDefaultData($systemMessage, $userMessage, $userInstruction));
+        return self::codeDebug(self::DEFAULT_CODE, $method, $message, $userMessage);
     }    
 
-    private static function getDefaultData($systemMessage, $userMessage = NULL, $userInstruction = NULL)
+    public static function critical($method, $message, $userMessage = NULL)
     {
-        $result = array(
-            "sys_message" => $systemMessage,
-            "usr_message" => TRUE === $userMessage ? $systemMessage : $userMessage,
-            "usr_instrucion" => $userInstruction
-        );
-        return $result;
+        return self::codeCritical(self::DEFAULT_CODE, $method, $message, $userMessage);
     }
-
-    public static function critical($method, $systemMessage, $userMessage = NULL, $userInstruction = NULL)
+    
+    public static function codeDebug($code, $method, $message, $userMessage = null)
     {
-        return self::criticalCode($method, self::DEFAULT_CODE, self::getDefaultData($systemMessage, $userMessage, $userInstruction));
+        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::DEBUG, $message, $userMessage);
     }
-
-    /**
-     * Critical message based on code.
-     * @param string $method
-     * @param string $code
-     * @param array $data
-     */
-    public static function criticalCode($method, $code, $data = array())
+    
+    public static function codeInfo($code, $method, $message, $userMessage = null)
     {
-        self::getInstance()->baseLog($method, $code, \Raneko\Common\Message::TYPE_CRITICAL, $data);
+        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::INFO, $message, $userMessage);
     }
+    
+    public static function codeWarn($code, $method, $message, $userMessage = null)
+    {
+        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::WARNING, $message, $userMessage);
+    }
+    
+    public static function codeError($code, $method, $message, $userMessage = null)
+    {
+        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::ERROR, $message, $userMessage);
+    }
+    
+    public static function codeCritical($code, $method, $message, $userMessage = null)
+    {   
+        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::CRITICAL, $message, $userMessage);
+    }
+    
 }
