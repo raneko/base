@@ -139,14 +139,14 @@ class Log
      */
     protected function _baseLog($method, $code, $type, $message, $userMessage = null)
     {
-        $message = new \Raneko\Common\Message();
-        $message->Code($code);
-        $message->Method($method);
-        $message->Type($type);
-        $message->AudienceApp();
-        $message->Text($message);
+        $messageObject = new \Raneko\Common\Message();
+        $messageObject->Code($code);
+        $messageObject->Method($method);
+        $messageObject->Type($type);
+        $messageObject->AudienceApp();
+        $messageObject->Text($message);
 
-        $this->_baseLogMessage($message);
+        $this->_baseLogMessage($messageObject);
     }
 
     public static function info($method, $message, $userMessage = NULL)
@@ -176,27 +176,27 @@ class Log
     
     public static function codeDebug($code, $method, $message, $userMessage = null)
     {
-        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::DEBUG, $message, $userMessage);
+        return self::getInstance()->_baseLog($method, $code, \Raneko\Common\Message::TYPE_DEBUG, $message, $userMessage);
     }
     
     public static function codeInfo($code, $method, $message, $userMessage = null)
     {
-        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::INFO, $message, $userMessage);
+        return self::getInstance()->_baseLog($method, $code, \Raneko\Common\Message::TYPE_INFO, $message, $userMessage);
     }
     
     public static function codeWarn($code, $method, $message, $userMessage = null)
     {
-        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::WARNING, $message, $userMessage);
+        return self::getInstance()->_baseLog($method, $code, \Raneko\Common\Message::TYPE_WARNING, $message, $userMessage);
     }
     
     public static function codeError($code, $method, $message, $userMessage = null)
     {
-        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::ERROR, $message, $userMessage);
+        return self::getInstance()->_baseLog($method, $code, \Raneko\Common\Message::TYPE_ERROR, $message, $userMessage);
     }
     
     public static function codeCritical($code, $method, $message, $userMessage = null)
     {   
-        return self::getInstance()->_baseLog($method, $code, \Monolog\Logger::CRITICAL, $message, $userMessage);
+        return self::getInstance()->_baseLog($method, $code, \Raneko\Common\Message::TYPE_CRITICAL, $message, $userMessage);
     }
     
 }
