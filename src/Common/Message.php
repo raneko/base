@@ -69,11 +69,11 @@ class Message implements \Raneko\Common\InterfaceSelfInstantiate
     const AUDIENCE_APP = "app";
     const AUDIENCE_USER = "user";
     const AUDIENCE_ALL = "all";
-    const TYPE_ERROR = "error";
-    const TYPE_WARNING = "warning";
-    const TYPE_CRITICAL = "critical";
-    const TYPE_INFO = "info";
-    const TYPE_DEBUG = "debug";
+    const TYPE_DEBUG = 100;
+    const TYPE_INFO = 200;
+    const TYPE_WARNING = 300;
+    const TYPE_ERROR = 400;
+    const TYPE_CRITICAL = 500;
 
     public function __construct()
     {
