@@ -156,7 +156,7 @@ abstract class HandlerAbstract
             /* Check for mandatory fields constraint */
             if (is_array($this->constraintFieldListMandatory) && count($this->constraintFieldListMandatory) > 0)
             {
-                $_result = \Raneko\Validation::fieldListMandatory($method, $this->constraintFieldListMandatory, $this->params);
+                $_result = \Raneko\Common\Validation::fieldListMandatory($method, $this->constraintFieldListMandatory, $this->params);
                 if ($_result === FALSE)
                 {
                     $proceed = FALSE;
@@ -165,7 +165,7 @@ abstract class HandlerAbstract
             /* Check for numeric fields constraint */
             if (is_array($this->constraintFieldListNumeric) && count($this->constraintFieldListNumeric) > 0)
             {
-                $_result = \Raneko\Validation::fieldListNumeric($method, $this->constraintFieldListNumeric, $this->params);
+                $_result = \Raneko\Common\Validation::fieldListNumeric($method, $this->constraintFieldListNumeric, $this->params);
                 if ($_result === FALSE)
                 {
                     $proceed = FALSE;
@@ -174,7 +174,7 @@ abstract class HandlerAbstract
             /* Check for email fields constraint */
             if (is_array($this->constraintFieldListEmail) && count($this->constraintFieldListEmail) > 0)
             {
-                $_result = \Raneko\Validation::fieldListEmail($method, $this->constraintFieldListEmail, $this->params);
+                $_result = \Raneko\Common\Validation::fieldListEmail($method, $this->constraintFieldListEmail, $this->params);
                 if ($_result === FALSE)
                 {
                     $proceed = FALSE;

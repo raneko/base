@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneko;
+namespace Raneko\Common;
 
 /**
  * Perform basic non database validation.

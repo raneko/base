@@ -167,7 +167,7 @@ class Rest extends \Raneko\Extend\Zend\Controller\Action
                 "api_hash",
                 "api_cmd"
             );
-            if (!\Raneko\Validation::fieldListMandatory(__METHOD__, $_mandatoryList, $this->params))
+            if (!\Raneko\Common\Validation::fieldListMandatory(__METHOD__, $_mandatoryList, $this->params))
             {
                 $result = FALSE;
                 $this->getResponse()->setHttpResponseCode(400);
