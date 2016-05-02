@@ -1,6 +1,19 @@
 {
     "name": "raneko/base",
+    "type": "library",
     "description": "Base library for application",
+    "homepage": "https://github.com/raneko/base",
+    "support": {
+        "issues": "https://github.com/raneko/base/issues",
+        "docs": "https://github.com/raneko/base"
+    },
+    "authors": [
+        {
+            "name": "Harry",
+            "email": "harry@raneko.com",
+            "role": "Developer"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Raneko\\": "src"
