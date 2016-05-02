@@ -7,9 +7,10 @@
         "issues": "https://github.com/raneko/base/issues",
         "docs": "https://github.com/raneko/base"
     },
+    "license": "proprietary",
     "authors": [
         {
-            "name": "Harry",
+            "name": "Harry Lesmana",
             "email": "harry@raneko.com",
             "role": "Developer"
         }
@@ -20,11 +21,8 @@
         }
     },
     "require": {
-        "aws/aws-sdk-php": "*",
-        "monolog/monolog": "*",
-        "phpunit/phpunit": "4.*",
-        "zendframework/zendframework1": "*",
-        "solarium/solarium": "3.2.0",
-        "illuminate/database": "*"
+        "zf1/zend-db": "1.12.11",
+        "zf1/zend-config": "1.12.11",
+        "monolog/monolog": "1.17.1"
     }
 }

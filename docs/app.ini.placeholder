@@ -1,0 +1,3 @@
+[app]
+log.path={app.log.path};Path for logging. Value must not be ended by trailing directory separator.
+log.level={app.log.level};Log severity to be logged. Value is following \Monolog\Logger constants.
