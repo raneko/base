@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneko\Crypt;
+namespace Raneko\Base\Crypt;
 
 /**
  * Class to handle hashing with SHA256 method.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneko;
+namespace Raneko\Base;
 
 /**
  * For required config, please refer to docs/app.ini.placeholder.

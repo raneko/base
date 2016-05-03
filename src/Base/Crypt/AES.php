@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneko\Crypt;
+namespace Raneko\Base\Crypt;
 
 /**
  * Cryptography class for AES.
